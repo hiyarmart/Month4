@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from movie_app.models import Director, Movie, Review
-from movie_app.serializers import DirectorSerializer, MovieSerializer, ReviewSerializer
+from movie_app.serializers import DirectorSerializer, MovieSerializer, ReviewSerializer, MovieReviewSerializer
 
 
 @api_view(['GET'])
@@ -51,4 +51,12 @@ def review_detail(request, id):
     if request.method == 'GET':
         queryset = get_object_or_404(Review, id=id)
         serializer = ReviewSerializer(queryset, many=False)
+        return Response(serializer.data, status=200)
+
+
+@api_view(['GET'])
+def movie_review_list(request):
+    if request.method == 'GET':
+        queryset = Movie.objects.all()
+        serializer = MovieReviewSerializer(queryset, many=True)
         return Response(serializer.data, status=200)
